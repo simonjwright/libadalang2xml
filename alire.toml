@@ -1,0 +1,31 @@
+name = "libadalang2xml"
+description = "Generates XML for Ada source, using libadalang."
+version = "0.1.0"
+
+authors = ["Simon Wright"]
+maintainers = ["Simon Wright <simon@pushface.org>"]
+maintainers-logins = ["simonjwright"]
+licenses = "GPL-3.0-or-later"
+website = ""
+tags = ["ada", "xml"]
+
+executables = ["libadalang2xml"]
+
+[environment.'case(os)'.macos]
+# This code was originally developed on macOS, which is why the CFLAGS
+# setting specifies where the includes for external libraries used by
+# GNATCOLL are to be found (Homebrew places items it manages in
+# /usr/local or /opt/homebrew on Intel or Apple silicon respectively).
+CFLAGS.set = "-I/usr/local/include -I/opt/homebrew/include"
+
+# Similarly for libraries; note that the offender (GNATCOLL_GMP)
+# doesn't (yet) reference this variable.
+LDFLAGS.set = "-L/usr/local/lib -L/opt/homebrew/lib"
+
+# Some of the GNATCOLL libraries attempt to build stand-alone
+# libraries even for static builds; this Will Not Work, see
+# https://github.com/AdaCore/gprbuild/issues/97
+LIBRARY_TYPE.set = "relocatable"
+
+[[depends-on]]
+libadalang = "^23.0.0"

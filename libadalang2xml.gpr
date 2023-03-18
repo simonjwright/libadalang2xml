@@ -1,0 +1,48 @@
+--  Copyright (C) 2023 Simon Wright <simon@pushface.org>
+--  SPDX-License-Identifier: GPL-3.0-or-later
+
+with "gnatcoll";
+with "libadalang";
+
+with "config/libadalang2xml_config.gpr";
+
+project Libadalang2xml is
+
+   for Source_Dirs use ("src/", "config/");
+   for Object_Dir use "obj/" & Libadalang2xml_Config.Build_Profile;
+   for Create_Missing_Dirs use "True";
+   for Exec_Dir use "bin";
+   for Main use ("libadalang2xml.adb");
+
+   package Compiler is
+      for Default_Switches ("Ada")
+      use Libadalang2xml_Config.Ada_Compiler_Switches
+        & ("-gnat2022", "-gnatQ", "-gnateE");
+      case Libadalang2xml_Config.Build_Profile is
+         when "development" =>
+            for Default_Switches ("ada")
+            use Compiler'Default_Switches ("ada") & ("-gnata");
+         when others => null;
+      end case;
+   end Compiler;
+
+   package Binder is
+      for Switches ("Ada") use ("-Es");
+   end Binder;
+
+   Linker_Switches := "";
+   package Linker is
+      case Libadalang2xml_Config.Alire_Host_Os is
+         when "macos" =>
+            for Default_Switches ("ada") use
+              ("-L/usr/local/lib", "-L/opt/homebrew/lib");
+         when others =>
+            null;
+      end case;
+   end Linker;
+
+   package Install is
+      for Artifacts (".") use ("share");
+   end Install;
+
+end Libadalang2xml;
