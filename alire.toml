@@ -1,6 +1,6 @@
 name = "libadalang2xml"
 description = "Generates XML for Ada source, using libadalang."
-version = "0.1.0"
+version = "0.1.1"
 
 authors = ["Simon Wright"]
 maintainers = ["Simon Wright <simon@pushface.org>"]
@@ -18,14 +18,24 @@ executables = ["libadalang2xml"]
 # /usr/local or /opt/homebrew on Intel or Apple silicon respectively).
 CFLAGS.set = "-I/usr/local/include -I/opt/homebrew/include"
 
-# Similarly for libraries; note that the offender (GNATCOLL_GMP)
-# doesn't (yet) reference this variable.
+# Similarly for libraries; note that Libadalang and Langkit_Support
+# don't (yet) reference this variable.
 LDFLAGS.set = "-L/usr/local/lib -L/opt/homebrew/lib"
 
-# Some of the GNATCOLL libraries attempt to build stand-alone
+# Libadalang and Langkit_Support attempt to build stand-alone
 # libraries even for static builds; this Will Not Work, see
-# https://github.com/AdaCore/gprbuild/issues/97
+# https://github.com/AdaCore/gprbuild/issues/97.
 LIBRARY_TYPE.set = "relocatable"
+
+[build-switches]
+development.contracts = "yes"
+"*".ada_version = "ada2022"
 
 [[depends-on]]
 libadalang = "^23.0.0"
+
+[depends-on.'case(os)'.macos]
+# The gnat_native compilers don't provide libgmp, and there's no
+# current way of making it visible to the Libadalang/Langkit_Support
+# relocatable library builds.
+gnat_external = "*"

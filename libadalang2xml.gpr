@@ -17,13 +17,7 @@ project Libadalang2xml is
    package Compiler is
       for Default_Switches ("Ada")
       use Libadalang2xml_Config.Ada_Compiler_Switches
-        & ("-gnat2022", "-gnatQ", "-gnateE");
-      case Libadalang2xml_Config.Build_Profile is
-         when "development" =>
-            for Default_Switches ("ada")
-            use Compiler'Default_Switches ("ada") & ("-gnata");
-         when others => null;
-      end case;
+        & ("-gnatQ", "-gnateE");
    end Compiler;
 
    package Binder is
