@@ -32,10 +32,13 @@ development.contracts = "yes"
 "*".ada_version = "ada2022"
 
 [[depends-on]]
-libadalang = "^23.0.0"
 
 [depends-on.'case(os)'.macos]
 # The gnat_native compilers don't provide libgmp, and there's no
 # current way of making it visible to the Libadalang/Langkit_Support
 # relocatable library builds.
-gnat_external = "*"
+gnat_external = ">=12.2.0"
+
+[depends-on.'case(os)'.'...']
+libadalang = "^23.0.0"
+
