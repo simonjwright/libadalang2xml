@@ -24,17 +24,6 @@ project Libadalang2xml is
       for Switches ("Ada") use ("-Es");
    end Binder;
 
-   Linker_Switches := "";
-   package Linker is
-      case Libadalang2xml_Config.Alire_Host_Os is
-         when "macos" =>
-            for Default_Switches ("ada") use
-              ("-L/usr/local/lib", "-L/opt/homebrew/lib");
-         when others =>
-            null;
-      end case;
-   end Linker;
-
    package Install is
       for Artifacts (".") use ("share");
    end Install;
