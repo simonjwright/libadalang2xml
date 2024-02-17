@@ -68,7 +68,7 @@ generates
 </CompilationUnit>
 ```
 """
-version = "1.0.1"
+version = "1.0.2"
 
 authors = ["Simon Wright"]
 maintainers = ["Simon Wright <simon@pushface.org>"]
@@ -84,5 +84,4 @@ development.contracts = "yes"
 "*".ada_version = "ada2022"
 
 [[depends-on]]
-libadalang = "^23.0.0"
-
+libadalang = "*"
